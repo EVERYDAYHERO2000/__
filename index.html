@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<body>
+	
+	<script src="__.js" ></script>
+	
+	<script>
+		
+		
+		var doc = __.collection.add('document', {
+			tag : 'div',
+			class : ['document'],
+			content : '',
+			attrs : {
+				style : {
+					background : 'red',
+					padding : '10px'
+				}
+			},
+			events: {
+				click : function(e){
+					alert('done');
+				}
+			}
+		});
+		
+		var tree = __.collection.add('tree', {
+			tag : 'div',
+			content : [{
+				tag : 'div',
+				class : 'tree__line',
+				attrs : {
+					style : {
+						background : '#7fb2b4',
+						padding : '10px'
+					}
+				},
+				content : [{
+					tag : 'div',
+					content : '',
+					attrs : {
+						style : {
+							background : '#694c69',
+							padding : '10px'
+						}
+					}
+				}]
+			}],
+			attrs : {
+				style : {
+					background : '#d9dbc4',
+					padding : '20px',
+				}
+			}
+		});
+		
+		var elem = __.collection.add('elem', {
+			tag : 'div',
+			content : '11111',
+			attrs : {
+				style : {
+					background : '#2493c4',
+					padding: '30px'
+				}
+			}
+		});
+		
+		__.collection.build(document.body, [
+			doc.child(
+				tree.content('sample')
+			),
+			tree.child(
+				elem.child(
+					tree.child(
+						doc.content('e_1'),
+						elem.content('e_2'),
+						doc.content('e_3'),
+						elem.content('e_4'),
+						doc.content('e_5')
+					)
+				),
+				elem.content('Hello World!')
+			),
+			elem,
+			doc.child(
+				elem.child(
+					doc.content('New document element'),
+					elem.child(
+						elem, 
+						elem
+					)
+				)
+			)
+		]);
+	</script>	
+	</body>
+</html>
