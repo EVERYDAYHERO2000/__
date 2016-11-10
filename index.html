@@ -65,13 +65,20 @@
 			}
 		});
 		
-		__.collection.build(document.body, [
+		
+		
+		
+		
+		__.collection.select(document.body).build(
 			doc.child(
 				tree.content('sample')
 			),
 			tree.child(
 				elem.child(
 					tree.child(
+						doc.count(40, function(e, n){
+							return e.content('____' + n);
+						}),
 						doc.content('e_1'),
 						elem.content('e_2'),
 						doc.content('e_3'),
@@ -91,7 +98,7 @@
 					)
 				)
 			)
-		]);
+		);
 	</script>	
 	</body>
 </html>

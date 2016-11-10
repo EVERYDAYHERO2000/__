@@ -6,6 +6,10 @@ __.collection = {};
 
 __.collection.lib = {};
 
+__.app = {};
+
+__.app.target = document.body;
+
 /**
  * Добавить новый элемент в коллекцию
  * @param   {string} name  Уникальное имя элемента в коллекции
@@ -96,6 +100,15 @@ __.collection.add = function (name, proto) {
 			return block;
 		}
 
+		this.count = function(num, callback){
+			var arr = [];
+			for (var i = 0; i < num; i++){
+				var clone = __this__._clone();
+				arr.push( callback(clone, i) );
+			}
+			
+			return arr;
+		}
 		/**
 		 * Удаляет элемент из коллекции
 		 * @param   {function} callback в качестве аргумента получает объект элемента
@@ -127,11 +140,16 @@ __.collection.add = function (name, proto) {
 			var clone = __this__._clone();
 			var out = clone.out;
 			out.content = [];
-
 			for (var key = 0; key < arguments.length; key++) {
-				out.content.push(arguments[key].proto);
+				if (Object.prototype.toString.call(arguments[key]) === '[object Array]') {
+					for (var i = 0; i < arguments[key].length; i++) {
+						out.content.push(arguments[key][i].proto);	
+					}
+				} else {
+					out.content.push(arguments[key].proto);
+				}
 			}
-	
+			
 			return clone;
 		}
 
@@ -142,10 +160,12 @@ __.collection.add = function (name, proto) {
 		 * @returns {object} возвращает элемент с строкой в content
 		 */
 		this.content = function (str, callback) {
+			
 			var clone = __this__._clone();
 			var out = clone.out;
 			out.content = str;
 			if (callback) callback(__this__);
+
 			return clone;
 		}
 
@@ -191,17 +211,17 @@ __.collection.find = function (name) {
  * @param   {function} callback в качестве аргумента получает __.collection
  * @returns {object} __.collection
  */
-__.collection.build = function (parent, arr, callback) {
+__.collection.build = function () {
+	var parent = __.app.target; 
 	var tree = {
 		parent: parent,
 		content: []
 	};
 
-	if (Object.prototype.toString.call(arr) === '[object Array]') {
-		for (var key = 0; key < arr.length; key++) {
-			tree.content.push(arr[key].proto);
-		}
+	for (var key = 0; key < arguments.length; key++) {
+		tree.content.push(arguments[key].proto);
 	}
+
 
 	var YA = {};
 
@@ -452,12 +472,15 @@ __.collection.build = function (parent, arr, callback) {
 		return this;
 
 	}
-
 	YA.Block(tree);
-
-	if (callback) callback(this);
+	
 	return this;
 };
+
+__.collection.select = function(node) {
+	__.app.target = node;
+	return this;
+}
 
 __.f = {};
 
