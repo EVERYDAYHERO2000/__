@@ -1,82 +1,81 @@
 <!DOCTYPE html>
 <html>
-	<body>
-	
-	<script src="__.js" ></script>
-	
+
+<body>
+
+	<script src="__.js"></script>
+
 	<script>
-		
-		
-		var doc = __.collection.add('document', {
-			tag : 'div',
-			class : ['document'],
-			content : '',
-			attrs : {
-				style : {
-					background : 'red',
-					padding : '10px'
+		var doc = __.add('document', {
+			tag: 'div',
+			class: ['document'],
+			content: '',
+			attrs: {
+				style: {
+					background: 'red',
+					padding: '10px'
 				}
 			},
 			events: {
-				click : function(e){
+				click: function (e) {
 					alert('done');
 				}
 			}
 		});
-		
-		var tree = __.collection.add('tree', {
-			tag : 'div',
-			content : [{
-				tag : 'div',
-				class : 'tree__line',
-				attrs : {
-					style : {
-						background : '#7fb2b4',
-						padding : '10px'
+
+		var tree = __.add('tree', {
+			tag: 'div',
+			content: [{
+				tag: 'div',
+				class: 'tree__line',
+				attrs: {
+					style: {
+						background: '#7fb2b4',
+						padding: '10px'
 					}
 				},
-				content : [{
-					tag : 'div',
-					content : '',
-					attrs : {
-						style : {
-							background : '#694c69',
-							padding : '10px'
+				content: [{
+					tag: 'div',
+					content: '',
+					attrs: {
+						style: {
+							background: '#694c69',
+							padding: '10px'
 						}
 					}
 				}]
 			}],
-			attrs : {
-				style : {
-					background : '#d9dbc4',
-					padding : '20px',
+			attrs: {
+				style: {
+					background: '#d9dbc4',
+					padding: '20px',
 				}
 			}
 		});
-		
-		var elem = __.collection.add('elem', {
-			tag : 'div',
-			content : '11111',
-			attrs : {
-				style : {
-					background : '#2493c4',
+
+		var elem = __.add('elem', {
+			tag: 'div',
+			content: '11111',
+			attrs: {
+				style: {
+					background: '#2493c4',
 					padding: '30px'
 				}
 			}
 		});
-		
-		
-		
-		
-		
-		__.collection.select(document.body).build(
+
+
+
+
+
+		__.select(document.body).build(
 			doc.child(
 				tree.content('sample')
 			),
 			tree.child(
 				elem.child(
 					tree.child(
-						doc.count(40, function(e, n){
+						doc.count(40, function (e, n) {
 							return e.content('____' + n);
 						}),
 						doc.content('e_1'),
@@ -93,12 +92,16 @@
 				elem.child(
 					doc.content('New document element'),
 					elem.child(
-						elem, 
+						elem,
 						elem
 					)
 				)
-			)
+			),
+			doc.count(40, function (e, n) {
+				return e.content('____' + n);
+			})
 		);
-	</script>	
-	</body>
+	</script>
+</body>
+
 </html>

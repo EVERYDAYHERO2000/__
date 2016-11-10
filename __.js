@@ -2,9 +2,8 @@
 
 var __ = window.__ || {};
 
-__.collection = {};
 
-__.collection.lib = {};
+__.lib = {};
 
 __.app = {};
 
@@ -14,10 +13,10 @@ __.app.target = document.body;
  * Добавить новый элемент в коллекцию
  * @param   {string} name  Уникальное имя элемента в коллекции
  * @param   {object} proto описание прототипа объекта
- * @returns {object} __.collection
+ * @returns {object} __
  */
-__.collection.add = function (name, proto) {
-	
+__.add = function (name, proto) {
+
 	/**
 	 * Конструтрор объекта для элемента в коллекции
 	 * @param   {string} name  Имя элемента в коллекции
@@ -100,34 +99,34 @@ __.collection.add = function (name, proto) {
 			return block;
 		}
 
-		this.count = function(num, callback){
-			var arr = [];
-			for (var i = 0; i < num; i++){
-				var clone = __this__._clone();
-				arr.push( callback(clone, i) );
+		this.count = function (num, callback) {
+				var arr = [];
+				for (var i = 0; i < num; i++) {
+					var clone = __this__._clone();
+					arr.push(callback(clone, i));
+				}
+
+				return arr;
 			}
-			
-			return arr;
-		}
-		/**
-		 * Удаляет элемент из коллекции
-		 * @param   {function} callback в качестве аргумента получает объект элемента
-		 * @returns {object} __.collection
-		 */
+			/**
+			 * Удаляет элемент из коллекции
+			 * @param   {function} callback в качестве аргумента получает объект элемента
+			 * @returns {object} __
+			 */
 		this.remove = function (callback) {
 			if (callback) callback(__this__);
-			return __.collection.remove(__this__.name);
+			return __.remove(__this__.name);
 		}
 
 		/**
 		 * Находит элемент в коллекции
 		 * @param   {string} name     Имя элемента в коллекции
 		 * @param   {function} callback в качестве аргумента получает объект элемента
-		 * @returns {object} __.collection
+		 * @returns {object} __
 		 */
 		this.find = function (name, callback) {
 			if (callback) callback(__this__);
-			return __.collection.find(name);
+			return __.find(name);
 		}
 
 		/**
@@ -143,13 +142,13 @@ __.collection.add = function (name, proto) {
 			for (var key = 0; key < arguments.length; key++) {
 				if (Object.prototype.toString.call(arguments[key]) === '[object Array]') {
 					for (var i = 0; i < arguments[key].length; i++) {
-						out.content.push(arguments[key][i].proto);	
+						out.content.push(arguments[key][i].proto);
 					}
 				} else {
 					out.content.push(arguments[key].proto);
 				}
 			}
-			
+
 			return clone;
 		}
 
@@ -160,7 +159,7 @@ __.collection.add = function (name, proto) {
 		 * @returns {object} возвращает элемент с строкой в content
 		 */
 		this.content = function (str, callback) {
-			
+
 			var clone = __this__._clone();
 			var out = clone.out;
 			out.content = str;
@@ -180,18 +179,18 @@ __.collection.add = function (name, proto) {
 /**
  * Удаляет элемент из коллекции по имени
  * @param   {string} name имя элемента который следует удалить из коллекции
- * @returns {object} __.collection
+ * @returns {object} __
  */
-__.collection.remove = function (name) {
+__.remove = function (name) {
 	if (name in this.lib) delete this.lib[name];
 	return this;
 }
 
 /**
  * Возвращает колличество элементов в коллекции
- * @returns {object} __.collection
+ * @returns {object} __
  */
-__.collection.count = function () {
+__.count = function () {
 	return Object.keys(this.lib).length;
 }
 
@@ -200,7 +199,7 @@ __.collection.count = function () {
  * @param   {string} name Имя элемента
  * @returns {object} Возвращает объекст элемента из коллекции
  */
-__.collection.find = function (name) {
+__.find = function (name) {
 	if (name in this.lib) return this.lib[name];
 }
 
@@ -208,18 +207,24 @@ __.collection.find = function (name) {
  * Инициализирует построения структуры дерева элементов из коллекции
  * @param   {object} parent   dom элемент родитель в котором нужно построить структуру
  * @param   {Array} arr     массив элементов из коллекции
- * @param   {function} callback в качестве аргумента получает __.collection
- * @returns {object} __.collection
+ * @param   {function} callback в качестве аргумента получает __
+ * @returns {object} __
  */
-__.collection.build = function () {
-	var parent = __.app.target; 
+__.build = function () {
+	var parent = __.app.target;
 	var tree = {
 		parent: parent,
 		content: []
 	};
 
 	for (var key = 0; key < arguments.length; key++) {
-		tree.content.push(arguments[key].proto);
+		if (Object.prototype.toString.call(arguments[key]) === '[object Array]') {
+			for (var i = 0; i < arguments[key].length; i++) {
+				tree.content.push(arguments[key][i].proto);
+			}
+		} else {
+			tree.content.push(arguments[key].proto);
+		}
 	}
 
 
@@ -473,11 +478,11 @@ __.collection.build = function () {
 
 	}
 	YA.Block(tree);
-	
+
 	return this;
 };
 
-__.collection.select = function(node) {
+__.select = function (node) {
 	__.app.target = node;
 	return this;
 }
